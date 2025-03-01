@@ -1,10 +1,8 @@
 # DocAssist AI - Medical Report Analysis System
 
 <div align="center">
-  <img src="ui%20visuals/docsvg.png" alt="DocAssist AI Logo" width="600"/>
-  <br><br>
-  <img src="visuals/enhancing_healthcare_with_docassist.png" alt="DocAssist System Architecture" width="800"/>
-  <p><em>DocAssist AI System Architecture: Integrating Healthcare Support, Data Analysis, and Personalized Recommendations</em></p>
+  <img src="ui%20visuals/Screenshot%202025-03-02%20at%2000-15-56%20DocAssist%20AI%20-%20Medical%20Report%20Analysis.png" alt="DocAssist AI Interface" width="800"/>
+  <p><em>DocAssist AI Web Interface: Modern, Intuitive, and User-Friendly Design</em></p>
 </div>
 
 > **DocAssist AI** is a sophisticated medical report analysis system that leverages machine learning to analyze blood test reports and provide intelligent medical recommendations. The system can process both PDF reports and manually entered blood test values to deliver comprehensive medical insights.
@@ -35,10 +33,11 @@ The system is built with a focus on accuracy, reliability, and user experience, 
 - 🏃‍♂️ **Health & Wellness Centers**
 
 <div align="center">
-  <img src="ui%20visuals/Screenshot%202025-03-02%20at%2000-15-56%20DocAssist%20AI%20-%20Medical%20Report%20Analysis.png" alt="DocAssist AI Interface" width="800"/>
-  <p><em>DocAssist AI Web Interface: Modern, Intuitive, and User-Friendly Design</em></p>
+  <img src="ui%20visuals/docsvg.png" alt="DocAssist AI Logo" width="600"/>
+  <br><br>
+  <img src="visuals/enhancing_healthcare_with_docassist.png" alt="DocAssist System Architecture" width="800"/>
+  <p><em>DocAssist AI System Architecture: Integrating Healthcare Support, Data Analysis, and Personalized Recommendations</em></p>
 </div>
-
 ## ✨ Features
 
 ### Core Functionality
