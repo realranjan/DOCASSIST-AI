@@ -1488,6 +1488,51 @@
             background: rgba(255, 255, 255, 0.02);
             border-color: rgba(255, 255, 255, 0.1);
         }
+
+        .button-secondary {
+            background-color: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .button-secondary:hover {
+            background-color: #e5e7eb;
+        }
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 12px 24px;
+            border-radius: 6px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+        }
+        .toast-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .toast-success {
+            border-left: 4px solid #10b981;
+        }
+        .toast-error {
+            border-left: 4px solid #ef4444;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1639,35 +1684,35 @@
                             <div class="grid">
                     <div class="form-group">
                                     <label for="HAEMATOCRIT">Haematocrit (%)</label>
-                                    <input type="number" step="0.1" class="input" id="HAEMATOCRIT" name="HAEMATOCRIT" required>
+                                    <input type="number" step="0.01" class="input" id="HAEMATOCRIT" name="HAEMATOCRIT" required>
                     </div>
                     <div class="form-group">
                                     <label for="HAEMOGLOBINS">Haemoglobin (g/dL)</label>
-                                    <input type="number" step="0.1" class="input" id="HAEMOGLOBINS" name="HAEMOGLOBINS" required>
+                                    <input type="number" step="0.01" class="input" id="HAEMOGLOBINS" name="HAEMOGLOBINS" required>
                     </div>
                     <div class="form-group">
                                     <label for="ERYTHROCYTE">Erythrocyte (M/µL)</label>
-                                    <input type="number" step="0.1" class="input" id="ERYTHROCYTE" name="ERYTHROCYTE" required>
+                                    <input type="number" step="0.01" class="input" id="ERYTHROCYTE" name="ERYTHROCYTE" required>
                     </div>
                     <div class="form-group">
                                     <label for="LEUCOCYTE">Leucocyte (K/µL)</label>
-                                    <input type="number" step="0.1" class="input" id="LEUCOCYTE" name="LEUCOCYTE" required>
+                                    <input type="number" step="0.01" class="input" id="LEUCOCYTE" name="LEUCOCYTE" required>
                     </div>
                     <div class="form-group">
                                     <label for="THROMBOCYTE">Thrombocyte (K/µL)</label>
-                                    <input type="number" step="1" class="input" id="THROMBOCYTE" name="THROMBOCYTE" required>
+                                    <input type="number" step="0.01" class="input" id="THROMBOCYTE" name="THROMBOCYTE" required>
                     </div>
                     <div class="form-group">
                                     <label for="MCH">MCH (pg)</label>
-                                    <input type="number" step="0.1" class="input" id="MCH" name="MCH" required>
+                                    <input type="number" step="0.01" class="input" id="MCH" name="MCH" required>
                     </div>
                     <div class="form-group">
                                     <label for="MCHC">MCHC (g/dL)</label>
-                                    <input type="number" step="0.1" class="input" id="MCHC" name="MCHC" required>
+                                    <input type="number" step="0.01" class="input" id="MCHC" name="MCHC" required>
                     </div>
                     <div class="form-group">
                                     <label for="MCV">MCV (fL)</label>
-                                    <input type="number" step="0.1" class="input" id="MCV" name="MCV" required>
+                                    <input type="number" step="0.01" class="input" id="MCV" name="MCV" required>
                     </div>
                     <div class="form-group">
                                     <label for="AGE">Age (years)</label>
@@ -2036,18 +2081,18 @@
         }
 
         function updateParameterCard(card, params) {
-            const value = parseFloat(params.value);
-            const percentage = ((value - params.min) / (params.max - params.min)) * 100;
-            const status = getParameterStatus(value, params.min, params.max);
+            const value = parseFloat(params.value).toFixed(2);
+            const percentage = Math.min(Math.max(((parseFloat(params.value) - params.min) / (params.max - params.min)) * 100, 0), 100);
+            const status = getParameterStatus(parseFloat(params.value), params.min, params.max);
 
             card.querySelector('.parameter-value').textContent = `${value} ${params.unit}`;
+            card.querySelector('.range-fill').style.width = `${percentage}%`;
             card.querySelector('.trend-text').textContent = status;
-            card.querySelector('.range-fill').style.width = `${Math.min(Math.max(percentage, 0), 100)}%`;
             card.querySelector('.range-labels').innerHTML = `
-                <span>${params.min}</span>
-                <span>${params.max}</span>
+                <span>${params.min.toFixed(2)}</span>
+                <span>${params.max.toFixed(2)}</span>
             `;
-            card.querySelector('.parameter-info').textContent = `Reference: ${params.min} - ${params.max} ${params.unit}`;
+            card.querySelector('.parameter-info').textContent = `Reference: ${params.min.toFixed(2)} - ${params.max.toFixed(2)} ${params.unit}`;
         }
 
         function getParameterStatus(value, min, max) {
@@ -2267,6 +2312,14 @@
                                     : "Condition is manageable with outpatient care"}
                             </div>
                             <div class="generated-by">Report Generated by AI-Powered Medical Decision Support System</div>
+                            <button onclick="downloadReport()" class="button button-secondary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                Download Report as PDF
+                            </button>
                         </div>
                     </div>
                 `;
@@ -2287,22 +2340,71 @@
             }
         }
 
-        function displayError(message) {
-            const resultsDiv = document.getElementById('results');
-            resultsDiv.style.display = 'block';
-            resultsDiv.innerHTML = `
-                <div class="alert alert-error">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="8" x2="12" y2="12"></line>
-                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                    </svg>
-                    <div>
-                        <strong>Error</strong>
-                        ${message}
-                    </div>
+        async function downloadReport() {
+            try {
+                const reportDiv = document.querySelector('.medical-report');
+                if (!reportDiv) {
+                    showToast('No report available to download', 'error');
+                    return;
+                }
+
+                const response = await fetch('http://localhost:5000/generate-pdf', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        html_content: reportDiv.innerHTML
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to generate PDF');
+                }
+
+                // Create a blob from the PDF Stream
+                const blob = await response.blob();
+                // Create a link to download it
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'medical_report.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+
+                showToast('Report downloaded successfully', 'success');
+            } catch (error) {
+                console.error('Error downloading report:', error);
+                showToast('Failed to download report', 'error');
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `
+                <div class="toast-content">
+                    ${type === 'success' ? `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    ` : type === 'error' ? `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                    ` : ''}
+                    <span>${message}</span>
                 </div>
             `;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
         }
 
         // Clear any existing analysis data when the page loads

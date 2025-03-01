@@ -18,6 +18,7 @@ DocAssist AI is an advanced healthcare analytics platform designed to revolution
 - **Treatment Guidelines**: Provide evidence-based treatment recommendations and monitoring protocols
 - **PDF Processing**: Extract and analyze blood test values directly from PDF reports
 - **Real-time Processing**: Deliver instant analysis for manually entered blood test values
+- **PDF Report Generation**: Generate and download professional medical reports in PDF format
 
 The system is built with a focus on accuracy, reliability, and user experience, making it an invaluable tool for:
 - 👨‍⚕️ Medical Practitioners
@@ -35,6 +36,7 @@ The system is built with a focus on accuracy, reliability, and user experience, 
 - 💊 **Treatment Recommendations**: Provide detailed treatment plans and monitoring guidelines
 - 📱 **Modern UI/UX**: Clean, responsive interface with real-time updates
 - 🔒 **Secure Processing**: Local processing of medical data with no external storage
+- 📄 **PDF Report Generation**: Generate and download professional medical reports in PDF format
 
 ## Tech Stack
 
@@ -50,6 +52,8 @@ The system is built with a focus on accuracy, reliability, and user experience, 
 - PyPDF2 for PDF processing
 - NumPy/Pandas for data processing
 - Scikit-learn for ML predictions
+- pdfkit for PDF report generation
+- wkhtmltopdf for HTML to PDF conversion
 
 ## Prerequisites
 
@@ -57,6 +61,24 @@ Before running the application, ensure you have the following installed:
 - Python 3.8 or higher
 - pip (Python package manager)
 - Git
+- wkhtmltopdf (Required for PDF generation)
+
+### Installing wkhtmltopdf
+
+#### Windows
+```bash
+winget install wkhtmltopdf.wkhtmltox
+```
+
+#### macOS
+```bash
+brew install wkhtmltopdf
+```
+
+#### Linux (Ubuntu/Debian)
+```bash
+sudo apt-get install wkhtmltopdf
+```
 
 ## Installation
 
@@ -141,6 +163,11 @@ DOCASSIST-AI/
    - Review disease patterns if detected
    - Follow recommended treatments and monitoring plans
 
+4. **Download Report**:
+   - After analysis, click "Download Report as PDF"
+   - The report will be downloaded as a professional PDF document
+   - The PDF includes all analysis results, recommendations, and visualizations
+
 ## Development
 
 To contribute to the project:
@@ -158,6 +185,7 @@ The backend provides several REST endpoints:
 - `POST /predict/file`: Analyze PDF reports
 - `POST /predict`: Process manual entries
 - `GET /api/dashboard-data`: Get dashboard statistics
+- `POST /generate-pdf`: Generate and download PDF reports
 
 For detailed API documentation, refer to the [API Documentation](docs/API.md).
 
@@ -177,7 +205,7 @@ For support, please open an issue in the GitHub repository or contact the mainta
 
 ## Authors
 
-- Ranjan Kumar - Initial work - [realranjan](https://github.com/realranjan)
+- Ranjan Vernekar - Initial work - [realranjan](https://github.com/realranjan)
 
 ---
 Made with ❤️ by the DocAssist AI Team 

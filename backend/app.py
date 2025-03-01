@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import numpy as np
 import pandas as pd
@@ -10,6 +10,12 @@ import os
 from werkzeug.utils import secure_filename
 from datetime import datetime
 import pdfplumber
+import pdfkit
+import tempfile
+
+# Configure wkhtmltopdf path
+WKHTMLTOPDF_PATH = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+config = pdfkit.configuration(wkhtmltopdf=WKHTMLTOPDF_PATH)
 
 app = Flask(__name__)
 CORS(app)
@@ -706,8 +712,8 @@ def format_medical_report(prediction, values, detected_diseases, abnormal_values
             elif severity_text != 'Normal':
                 status_class = 'status-warning'
             
-            value_text = f"{value:.1f}"
-            normal_range = f"{ranges['low']['value']}-{ranges['high']['value']} {ranges['low']['unit']}"
+            value_text = f"{value:.2f}"
+            normal_range = f"{ranges['low']['value']:.2f}-{ranges['high']['value']:.2f} {ranges['low']['unit']}"
             
             report.append(
                 f'<tr>'
@@ -738,12 +744,12 @@ def format_medical_report(prediction, values, detected_diseases, abnormal_values
             if value < margin_low:
                 abnormal_findings.append({
                     'severity': 'critical' if value < margin_low * 0.8 else 'warning',
-                    'text': f"{param} is Low ({value:.1f} {ranges['low']['unit']}): {ranges['conditions']['low']}"
+                    'text': f"{param} is Low ({value:.2f} {ranges['low']['unit']}): {ranges['conditions']['low']}"
                 })
             elif value > margin_high:
                 abnormal_findings.append({
                     'severity': 'critical' if value > margin_high * 1.2 else 'warning',
-                    'text': f"{param} is High ({value:.1f} {ranges['high']['unit']}): {ranges['conditions']['high']}"
+                    'text': f"{param} is High ({value:.2f} {ranges['high']['unit']}): {ranges['conditions']['high']}"
                 })
     
     if abnormal_findings:
@@ -901,8 +907,72 @@ def format_recommendations(detected_diseases):
     return '\n'.join(recommendations)
 
 def extract_numbers(text):
-    """Extract all numbers from the given text using regex."""
-    return re.findall(r'\d+\.?\d*', text)
+    """Extract all numbers from the given text using regex and format them with 2 decimal points."""
+    numbers = re.findall(r'\d+\.?\d*', text)
+    return [format(float(num), '.2f') for num in numbers]
+
+@app.route('/generate-pdf', methods=['POST'])
+def generate_pdf():
+    try:
+        data = request.json
+        html_content = data.get('html_content')
+        
+        if not html_content:
+            return jsonify({
+                'status': 'error',
+                'message': 'No HTML content provided'
+            }), 400
+
+        # Add CSS for PDF styling
+        css = """
+            <style>
+                body { font-family: Arial, sans-serif; }
+                .report-header { text-align: center; margin-bottom: 20px; }
+                .section { margin-bottom: 20px; }
+                table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+                th, td { padding: 8px; text-align: left; border: 1px solid #ddd; }
+                th { background-color: #f5f5f5; }
+                .parameter-status { padding: 4px 8px; border-radius: 4px; }
+                .status-normal { background-color: #10b981; color: white; }
+                .status-warning { background-color: #f59e0b; color: white; }
+                .status-critical { background-color: #ef4444; color: white; }
+                .finding { margin-bottom: 10px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+                .warning { background-color: #fff7ed; color: #854d0e; padding: 10px; border-radius: 4px; margin-bottom: 10px; }
+            </style>
+        """
+        
+        # Combine CSS with HTML content
+        full_html = f"{css}{html_content}"
+        
+        # Create temporary file
+        with tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) as temp_file:
+            # Configure PDF options
+            options = {
+                'page-size': 'A4',
+                'margin-top': '20mm',
+                'margin-right': '20mm',
+                'margin-bottom': '20mm',
+                'margin-left': '20mm',
+                'encoding': 'UTF-8',
+                'no-outline': None
+            }
+            
+            # Generate PDF
+            pdfkit.from_string(full_html, temp_file.name, options=options, configuration=config)
+            
+            # Send file to client
+            return send_file(
+                temp_file.name,
+                mimetype='application/pdf',
+                as_attachment=True,
+                download_name='medical_report.pdf'
+            )
+            
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000) 
