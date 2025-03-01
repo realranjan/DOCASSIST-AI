@@ -1,6 +1,8 @@
 # DocAssist AI - Medical Report Analysis System
 
 <div align="center">
+  <img src="ui%20visuals/docsvg.png" alt="DocAssist AI Logo" width="200"/>
+  <br><br>
   <img src="visuals/enhancing_healthcare_with_docassist.png" alt="DocAssist System Architecture" width="800"/>
   <p><em>DocAssist AI System Architecture: Integrating Healthcare Support, Data Analysis, and Personalized Recommendations</em></p>
 </div>
@@ -121,7 +123,8 @@ DOCASSIST-AI/
 │   └── package.json       # Node.js dependencies
 │
 ├── data/                  # Dataset and data processing
-├── notebooks/            # Jupyter notebooks for analysis
+├── notebooks/             # Jupyter notebooks for analysis
+├── ui visuals/            # how web app looks 
 ├── visuals/             # Project visuals and diagrams
 │
 ├── README.md            # Project documentation
@@ -131,81 +134,9 @@ DOCASSIST-AI/
 └── render.yaml         # Deployment configuration
 ```
 
-## Running the Application
-
-1. Start the Flask backend server:
-   ```bash
-   cd backend
-   python app.py
-   ```
-   The backend server will start on `http://localhost:5000`
-
-2. Open the frontend:
-   - Navigate to the `frontend` directory
-   - Open `index.html` in your web browser
-   - For the best experience, use a modern web browser (Chrome, Firefox, Edge)
-
-## Usage
-
-1. **PDF Analysis**:
-   - Click the "Upload PDF" button
-   - Select a blood test report PDF
-   - Wait for the analysis results
-
-2. **Manual Entry**:
-   - Navigate to the "Manual Entry" tab
-   - Fill in the blood test parameters
-   - Click "Analyze" for instant results
-
-3. **View Results**:
-   - Review the comprehensive medical report
-   - Check abnormal values and their implications
-   - Review disease patterns if detected
-   - Follow recommended treatments and monitoring plans
-
-4. **Download Report**:
-   - After analysis, click "Download Report as PDF"
-   - The report will be downloaded as a professional PDF document
-   - The PDF includes all analysis results, recommendations, and visualizations
-
-## Development
-
-To contribute to the project:
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
-## API Documentation
-
-The backend provides several REST endpoints:
-
-- `POST /predict/file`: Analyze PDF reports
-- `POST /predict`: Process manual entries
-- `GET /api/dashboard-data`: Get dashboard statistics
-- `POST /generate-pdf`: Generate and download PDF reports
-
-For detailed API documentation, refer to the [API Documentation](docs/API.md).
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Medical reference ranges and disease patterns are based on standard medical guidelines
-- UI design inspired by modern healthcare applications
-- Special thanks to all contributors and the medical professionals who provided domain expertise
-
-## Support
-
-For support, please open an issue in the GitHub repository or contact the maintainers.
-
 ## Authors
 
-- Ranjan Vernekar - Initial work - [realranjan](https://github.com/realranjan)
+- Ranjan Vernekar - Initial work - [GitHub](https://github.com/realranjan) | [LinkedIn](https://www.linkedin.com/in/ranjan-vernekar-a93b08252/)
 
 ---
-Made with ❤️ by the DocAssist AI Team 
+Made with ❤️ by the DocAssist AI Team
