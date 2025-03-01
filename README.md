@@ -13,7 +13,7 @@
 
 DocAssist AI is an advanced healthcare analytics platform designed to revolutionize the way medical professionals and healthcare providers analyze and interpret blood test reports. The system combines cutting-edge machine learning with medical expertise to:
 
-## 🔗 *Model Repository*: [DocAssist Model](https://github.com/realranjan/DOCASSIST-MODEL) - Contains the machine learning models and training notebooks.
+## 🔗 **Model Repository**: [DocAssist Model](https://github.com/realranjan/DOCASSIST-MODEL) - Contains the machine learning models and training notebooks.
 
 ### Key Capabilities
 
