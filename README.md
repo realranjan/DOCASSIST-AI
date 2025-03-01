@@ -29,6 +29,11 @@ The system is built with a focus on accuracy, reliability, and user experience, 
 - 📊 Medical Researchers
 - 🏃‍♂️ Health & Wellness Centers
 
+<div align="center">
+  <img src="ui%20visuals/Screenshot%202025-03-02%20at%2000-15-56%20DocAssist%20AI%20-%20Medical%20Report%20Analysis.png" alt="DocAssist AI Interface" width="800"/>
+  <p><em>DocAssist AI Web Interface: Modern, Intuitive, and User-Friendly Design</em></p>
+</div>
+
 ## Features
 
 - 🔍 **PDF Report Analysis**: Automatically extract medical values from uploaded PDF reports
