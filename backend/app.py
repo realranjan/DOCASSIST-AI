@@ -367,108 +367,46 @@ def prepare_input_data(data):
     
     return df
 
-# Define model paths - search in multiple locations
-possible_model_paths = [
-    os.path.join(os.path.dirname(__file__), 'models', 'final_model_pipeline.pkl'),
-    os.path.join(os.path.dirname(__file__), '..', 'models', 'final_model_pipeline.pkl'),
-    os.path.join('models', 'final_model_pipeline.pkl'),
-    'final_model_pipeline.pkl'
-]
+# Define model path
+MODEL_PATH = os.path.join(os.path.dirname(__file__), 'models', 'final_model_pipeline.pkl')
 
 # Global variable for model
 model = None
 
 def load_model():
     global model
-    last_exception = None
-    
-    print("Current working directory:", os.getcwd())
-    print("Looking for model file...")
-    
-    for model_path in possible_model_paths:
-        try:
-            print(f"Trying path: {model_path}")
-            if os.path.exists(model_path):
-                print(f"Found model at: {model_path}")
-                model = joblib.load(model_path)
-                
-                # Test prediction with sample data
-                test_data = {
-                    'HAEMATOCRIT': 45.0,
-                    'HAEMOGLOBINS': 14.0,
-                    'ERYTHROCYTE': 5.0,
-                    'LEUCOCYTE': 7.0,
-                    'THROMBOCYTE': 250.0,
-                    'MCH': 29.0,
-                    'MCHC': 34.0,
-                    'MCV': 90.0,
-                    'AGE': 35,
-                    'SEX_ENCODED': 1
-                }
-                
-                # Prepare test data
-                test_df = prepare_input_data(test_data)
-                
-                # Try prediction
-                try:
-                    test_prediction = model.predict(test_df)
-                    print(f"Test prediction successful: {test_prediction}")
-                    return True
-                except Exception as pred_error:
-                    print(f"Test prediction failed: {str(pred_error)}")
-                    raise pred_error
-                
+    try:
+        if not os.path.exists(MODEL_PATH):
+            print(f"Model not found at {MODEL_PATH}")
+            # Try alternate path
+            alternate_path = os.path.join(os.path.dirname(__file__), '..', 'models', 'final_model_pipeline.pkl')
+            if os.path.exists(alternate_path):
+                print(f"Found model at alternate path: {alternate_path}")
+                model = joblib.load(alternate_path)
             else:
-                print(f"No model found at: {model_path}")
-        except Exception as e:
-            print(f"Error loading from {model_path}: {str(e)}")
-            last_exception = e
-            continue
-    
-    if last_exception:
-        print(f"Final error loading model: {str(last_exception)}")
-    raise RuntimeError("Failed to load the model. Cannot start server without a working model.")
+                raise FileNotFoundError(f"Model not found at {MODEL_PATH} or {alternate_path}")
+        else:
+            print(f"Attempting to load model from: {MODEL_PATH}")
+            model = joblib.load(MODEL_PATH)
+        
+        if model is None:
+            raise ValueError("Model failed to load")
+            
+        # Verify model has predict method
+        if not hasattr(model, 'predict'):
+            raise AttributeError("Loaded model does not have predict method")
+            
+        print("Model loaded successfully")
+        return True
+    except Exception as e:
+        print(f"Error loading model: {str(e)}")
+        print(f"Current working directory: {os.getcwd()}")
+        print(f"Directory contents: {os.listdir(os.path.dirname(MODEL_PATH))}")
+        return False
 
 # Load model when starting the server
-load_model()
-
-@app.route('/test_prediction', methods=['GET'])
-def test_prediction():
-    """Endpoint to test model prediction with sample data"""
-    try:
-        # Sample data with normal ranges
-        test_data = {
-            'HAEMATOCRIT': 45.0,  # Normal range
-            'HAEMOGLOBINS': 14.0, # Normal range
-            'ERYTHROCYTE': 5.0,   # Normal range
-            'LEUCOCYTE': 7.0,     # Normal range
-            'THROMBOCYTE': 250.0, # Normal range
-            'MCH': 29.0,          # Normal range
-            'MCHC': 34.0,         # Normal range
-            'MCV': 90.0,          # Normal range
-            'AGE': 35,
-            'SEX_ENCODED': 1
-        }
-        
-        # Prepare data
-        input_df = prepare_input_data(test_data)
-        
-        # Make prediction
-        prediction = model.predict(input_df)
-        probability = model.predict_proba(input_df)
-        
-        return jsonify({
-            'status': 'success',
-            'prediction': 'Inpatient' if prediction[0] == 1 else 'Outpatient',
-            'probability': probability[0].tolist(),
-            'input_features': input_df.to_dict(orient='records')[0]
-        })
-        
-    except Exception as e:
-        return jsonify({
-            'status': 'error',
-            'message': str(e)
-        }), 500
+if not load_model():
+    raise RuntimeError("Failed to load the model. Cannot start server without a working model.")
 
 @app.route('/predict', methods=['POST'])
 def predict():
