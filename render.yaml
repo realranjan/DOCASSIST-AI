@@ -1,0 +1,60 @@
+services:
+  # Backend API Service
+  - type: web
+    name: docassist-api
+    runtime: python
+    region: singapore
+    plan: starter
+    buildCommand: |
+      python -m pip install --upgrade pip
+      pip install -r backend/requirements.txt
+    startCommand: cd backend && gunicorn app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.8.0
+      - key: FLASK_ENV
+        value: production
+      - key: FLASK_APP
+        value: app.py
+    healthCheckPath: /health
+    autoDeploy: true
+    disk:
+      name: uploads
+      mountPath: /opt/render/project/src/backend/uploads
+      sizeGB: 1
+
+  # Frontend Web Service
+  - type: web
+    name: docassist-frontend
+    runtime: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/build
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache
+    routes:
+      - source: /api/*
+        destination: https://docassist-api.onrender.com/api/:splat
+      - source: /*
+        destination: /index.html
+    envVars:
+      - key: NODE_VERSION
+        value: 16.x
+      - key: API_URL
+        value: https://docassist-api.onrender.com
+
+databases:
+  # SQLite Database (if needed)
+  - name: docassist-db
+    type: sqlite
+    ipAllowList: []  # only allow internal connections
+
+# Global environment variables
+envVarGroups:
+  - name: docassist-settings
+    envVars:
+      - key: TZ
+        value: UTC
+      - key: ENVIRONMENT
+        value: production 

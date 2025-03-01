@@ -1,0 +1,112 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Virtual Environment
+venv/
+env/
+.env
+ENV/
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+Thumbs.db
+.directory
+desktop.ini
+
+# Project specific
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/models/*
+!backend/models/.gitkeep
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+logs/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Test coverage and cache
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.tox/
+
+# Media and binary files
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.flv
+*.mp3
+*.wav
+*.zip
+*.tar
+*.gz
+*.rar
+*.7z
+*.doc
+*.docx
+*.xls
+*.xlsx
+*.ppt
+*.pptx
+
+# Keep important project files
+!requirements.txt
+!package.json
+!README.md
+!LICENSE
+!render.yaml
+!backend/app.py
+!frontend/server.js
+!frontend/config.js
+
+# Keep ML model files
+!backend/models/final_model_pipeline.pkl
+
+# Keep static assets and project visuals
+!frontend/public/
+!frontend/static/
+!frontend/templates/
+!visuals/*.png
+!visuals/*.jpg
+!visuals/*.svg
+!visuals/*.gif
+!docs/images/
+!frontend/public/images/
+!frontend/public/assets/
+
+# PDF handling
+!docs/**/*.pdf
+!examples/**/*.pdf
+!test_data/**/*.pdf
+backend/uploads/**/*.pdf
+
+# Documentation
+!docs/
+!*.md 
