@@ -58,44 +58,12 @@ class SessionData:
 # Initialize session data
 session_data = SessionData()
 
-# Initialize model at startup
-@app.before_first_request
-def initialize():
-    global model
-    try:
-        load_model()
-        print("Model initialized successfully on startup")
-    except Exception as e:
-        print(f"Error initializing model on startup: {str(e)}")
-        # Continue without failing - will try to load model again on first request
-
 @app.route('/')
 def home():
     return jsonify({
         'status': 'success',
         'message': 'DocAssist AI Backend is running'
     })
-
-@app.route('/health')
-def health_check():
-    """Health check endpoint for Render"""
-    try:
-        # Check if model is loaded
-        if model is None:
-            load_model()
-        
-        return jsonify({
-            'status': 'healthy',
-            'message': 'DocAssist API is running',
-            'model_loaded': model is not None,
-            'timestamp': datetime.now().isoformat()
-        })
-    except Exception as e:
-        return jsonify({
-            'status': 'unhealthy',
-            'message': str(e),
-            'timestamp': datetime.now().isoformat()
-        }), 500
 
 # Configure upload folder
 UPLOAD_FOLDER = 'uploads'
@@ -408,53 +376,21 @@ model = None
 def load_model():
     global model
     try:
-        # Try multiple possible paths for the model
-        possible_paths = [
-            os.path.join(os.path.dirname(__file__), 'models', 'final_model_pipeline.pkl'),
-            os.path.join(os.path.dirname(__file__), '..', 'models', 'final_model_pipeline.pkl'),
-            os.path.join('/opt/render/project/src/backend/models', 'final_model_pipeline.pkl'),
-            os.path.join('/opt/render/project/src/models', 'final_model_pipeline.pkl')
-        ]
+        if not os.path.exists(MODEL_PATH):
+            print(f"Model not found at {MODEL_PATH}")
+            # Try alternate path
+            alternate_path = os.path.join(os.path.dirname(__file__), '..', 'models', 'final_model_pipeline.pkl')
+            if os.path.exists(alternate_path):
+                print(f"Found model at alternate path: {alternate_path}")
+                model = joblib.load(alternate_path)
+            else:
+                raise FileNotFoundError(f"Model not found at {MODEL_PATH} or {alternate_path}")
+        else:
+            print(f"Attempting to load model from: {MODEL_PATH}")
+            model = joblib.load(MODEL_PATH)
         
-        model_loaded = False
-        for path in possible_paths:
-            if os.path.exists(path):
-                print(f"Found model at path: {path}")
-                try:
-                    model = joblib.load(path)
-                    model_loaded = True
-                    break
-                except Exception as e:
-                    print(f"Error loading model from {path}: {str(e)}")
-                    continue
-        
-        if not model_loaded:
-            print("Model not found in any of the expected locations")
-            # Create a simple fallback model with custom feature engineering
-            from sklearn.ensemble import RandomForestClassifier
-            from sklearn.pipeline import Pipeline
-            from sklearn.preprocessing import FunctionTransformer
-            
-            def custom_feature_engineering(X):
-                # Make a copy to avoid modifying the original
-                X_copy = X.copy()
-                
-                # Add the engineered features
-                X_copy['THROMBOCYTE_LEUCOCYTE_RATIO'] = X_copy['THROMBOCYTE'] / (X_copy['LEUCOCYTE'] + 1e-6)
-                X_copy['ERYTHROCYTE_LEUCOCYTE'] = X_copy['ERYTHROCYTE'] * X_copy['LEUCOCYTE']
-                
-                return X_copy
-            
-            # Create a simple pipeline with feature engineering
-            feature_engineering_transformer = FunctionTransformer(custom_feature_engineering, validate=False)
-            clf = RandomForestClassifier(n_estimators=10, random_state=42)
-            
-            model = Pipeline([
-                ('feature_engineering', feature_engineering_transformer),
-                ('classifier', clf)
-            ])
-            
-            print("Created fallback model with custom feature engineering")
+        if model is None:
+            raise ValueError("Model failed to load")
             
         # Verify model has predict method
         if not hasattr(model, 'predict'):
@@ -472,60 +408,92 @@ def load_model():
 if not load_model():
     raise RuntimeError("Failed to load the model. Cannot start server without a working model.")
 
-@app.route('/api/predict', methods=['POST'])
+@app.route('/predict', methods=['POST'])
 def predict():
     try:
-        # Load model if not already loaded
-        if model is None:
-            load_model()
-            
-        # Get data from request
         data = request.json
         
-        # Create DataFrame with required columns
-        required_columns = ['AGE', 'SEX_ENCODED', 'HAEMATOCRIT', 'HAEMOGLOBINS', 'ERYTHROCYTE', 
-                           'LEUCOCYTE', 'THROMBOCYTE', 'MCH', 'MCHC', 'MCV']
+        # Create DataFrame with user input
+        input_data = {
+            'HAEMATOCRIT': float(data.get('HAEMATOCRIT', 45)),
+            'HAEMOGLOBINS': float(data.get('HAEMOGLOBINS', 14)),
+            'ERYTHROCYTE': float(data.get('ERYTHROCYTE', 5)),
+            'LEUCOCYTE': float(data.get('LEUCOCYTE', 7)),
+            'THROMBOCYTE': float(data.get('THROMBOCYTE', 250)),
+            'MCH': float(data.get('MCH', 29)),
+            'MCHC': float(data.get('MCHC', 34)),
+            'MCV': float(data.get('MCV', 90)),
+            'AGE': float(data.get('AGE', 35)),
+            'SEX_ENCODED': int(data.get('SEX', 1))
+        }
         
-        # Create a DataFrame with default values
-        input_data = pd.DataFrame({col: [0.0] for col in required_columns})
+        print("\n=== Prediction Details ===")
+        print("Input Data:")
+        for key, value in input_data.items():
+            print(f"{key}: {value}")
         
-        # Update with actual values
-        for col in required_columns:
-            if col in data:
-                input_data[col] = [float(data[col])]
-            elif col == 'SEX_ENCODED' and 'SEX' in data:
-                # Handle SEX conversion
-                input_data[col] = [1.0 if data['SEX'] == 'M' else 0.0]
+        # Convert to DataFrame
+        input_df = pd.DataFrame([input_data])
         
-        # Make prediction
-        try:
-            prediction = model.predict(input_data)[0]
-            prediction_proba = model.predict_proba(input_data)[0].tolist()
-        except Exception as e:
-            print(f"Error during prediction: {str(e)}")
-            # Fallback to a simple prediction based on heuristics
-            # Higher LEUCOCYTE often indicates infection/inflammation which might require inpatient care
-            leucocyte = float(data.get('LEUCOCYTE', 0))
-            prediction = 1 if leucocyte > 10.0 else 0
-            prediction_proba = [0.5, 0.5]  # Default 50/50 probability
+        # Get abnormal values before prediction
+        abnormal_values = {}
+        severe_conditions = 0
+        for param, value in input_data.items():
+            if param in BLOOD_RANGES:
+                ranges = BLOOD_RANGES[param]
+                # Add a 5% margin to the normal ranges
+                margin_low = ranges['low']['value'] * 0.95  # Allow values 5% below the lower limit
+                margin_high = ranges['high']['value'] * 1.05  # Allow values 5% above the upper limit
+                
+                if value < margin_low or value > margin_high:
+                    abnormal_values[param] = {'value': value}
+                    # Check for severe conditions with margins
+                    if value < margin_low * 0.8 or value > margin_high * 1.2:
+                        severe_conditions += 1
+                        print(f"\nSevere condition detected in {param}: {value}")
+
+        # Check for disease patterns
+        detected_diseases = check_disease_patterns(input_data)
+        if detected_diseases:
+            print("\nDetected Diseases:")
+            for disease in detected_diseases:
+                print(f"- {disease}")
         
-        # Add to session data
-        report = session_data.add_report(data, prediction)
+        # Make prediction, but override if severe conditions are present
+        model_prediction = model.predict(input_df)
+        print(f"\nModel's raw prediction: {'Inpatient' if model_prediction[0] == 1 else 'Outpatient'}")
         
-        # Return prediction
+        # Remove the override logic and use raw model prediction
+        final_prediction = model_prediction[0]
+        print(f"Final prediction: {'Inpatient' if final_prediction == 1 else 'Outpatient'}")
+        print(f"Number of severe conditions: {severe_conditions}")
+        print("============================\n")
+        
+        # Generate medical report
+        medical_report = format_medical_report(
+            final_prediction,
+            input_data,
+            detected_diseases,
+            abnormal_values
+        )
+        
+        # Convert prediction to meaningful response
+        result = "Inpatient" if final_prediction == 1 else "Outpatient"
+        
         return jsonify({
             'status': 'success',
-            'prediction': int(prediction),
-            'prediction_label': 'Inpatient' if prediction == 1 else 'Outpatient',
-            'probability': prediction_proba,
-            'report': report
+            'prediction': result,
+            'prediction_code': int(final_prediction),
+            'medical_report': medical_report,
+            'recommendations': format_recommendations(detected_diseases) if detected_diseases else None,
+            'blood_ranges': BLOOD_RANGES
         })
     except Exception as e:
-        print(f"Error in prediction endpoint: {str(e)}")
+        print(f"\nError in prediction: {str(e)}\n")
         return jsonify({
             'status': 'error',
             'message': str(e)
-        }), 500
+        }), 400
 
 @app.route('/predict/file', methods=['POST'])
 def predict_from_file():
