@@ -1,9 +1,9 @@
 # DocAssist AI - Medical Report Analysis System
 
 <div align="center">
-  <img src="ui%20visuals/docsvg.png" alt="DocAssist AI Logo" width="1000"/>
+  <img src="ui%20visuals/docsvg.png" alt="DocAssist AI Logo" width="800"/>
   <br><br>
-  <img src="visuals/enhancing_healthcare_with_docassist.png" alt="DocAssist System Architecture" width="1000"/>
+  <img src="visuals/enhancing_healthcare_with_docassist.png" alt="DocAssist System Architecture" width="800"/>
   <p><em>DocAssist AI System Architecture: Integrating Healthcare Support, Data Analysis, and Personalized Recommendations</em></p>
 </div>
 
