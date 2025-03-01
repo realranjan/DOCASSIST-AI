@@ -8,10 +8,12 @@ services:
     buildCommand: |
       python -m pip install --upgrade pip
       pip install -r backend/requirements.txt
+      mkdir -p backend/models
+      cp -r models/* backend/models/ || echo "No models directory found"
     startCommand: cd backend && gunicorn app:app
     envVars:
       - key: PYTHON_VERSION
-        value: 3.8.0
+        value: 3.8.15
       - key: FLASK_ENV
         value: production
       - key: FLASK_APP
