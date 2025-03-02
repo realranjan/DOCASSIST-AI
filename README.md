@@ -143,11 +143,27 @@ sudo apt-get install wkhtmltopdf
    source venv/bin/activate
    ```
 
-3. **Install the required dependencies:**
+3. **Install the required dependencies backend :**
    ```bash
-   pip install -r requirements.txt
+   cd backend && pip install -r requirements.txt
+   ```
+   
+4. ** RUN THE BACKEND:**
+   ```bash
+   cd backend && python app.py
+   ```
+      
+5. **Install the required dependencies for the frontend :**
+   ```bash
+   cd frontend && npm install
+   ```
+   
+6. **RUN THE FRONTEND:**
+   ```bash
+   cd frontend && node.server.js
    ```
 
+   
 ## 📁 Project Structure
 
 ```
