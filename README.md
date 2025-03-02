@@ -148,7 +148,7 @@ sudo apt-get install wkhtmltopdf
    cd backend && pip install -r requirements.txt
    ```
    
-4. ** RUN THE BACKEND:**
+4. **RUN THE BACKEND:**
    ```bash
    cd backend && python app.py
    ```
