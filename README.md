@@ -1,7 +1,6 @@
 
 [![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-blue.svg)](https://github.com/realranjan/DOCASSIST-AI)
-[![UI Repository](https://img.shields.io/badge/UI-Repository-green.svg)](https://github.com/realranjan/DOCASSIST-AI)
-[![Live Demo](https://img.shields.io/badge/Live-Demo-orange.svg)](https://docassist-ai-alpha.vercel.app)
+[![MODEL Repository](https://img.shields.io/badge/MODEL-Repository-green.svg)](https://github.com/realranjan/DOCASSIST-MODEL)
 [![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # DocAssist AI - Medical Report Analysis System
