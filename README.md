@@ -1,8 +1,3 @@
-
-[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-blue.svg)](https://github.com/realranjan/DOCASSIST-AI)
-[![MODEL Repository](https://img.shields.io/badge/MODEL-Repository-green.svg)](https://github.com/realranjan/DOCASSIST-MODEL)
-[![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
 # DocAssist AI - Medical Report Analysis System
 
 <div align="center">
@@ -11,6 +6,11 @@
 </div>
 
 > **DocAssist AI** is a sophisticated medical report analysis system that leverages machine learning to analyze blood test reports and provide intelligent medical recommendations. The system can process both PDF reports and manually entered blood test values to deliver comprehensive medical insights.
+
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-blue.svg)](https://github.com/realranjan/DOCASSIST-AI)
+[![MODEL Repository](https://img.shields.io/badge/MODEL-Repository-green.svg)](https://github.com/realranjan/DOCASSIST-MODEL)
+[![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 
 ## 🌟 Overview
 
