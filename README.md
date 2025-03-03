@@ -43,6 +43,7 @@ The system is built with a focus on accuracy, reliability, and user experience, 
   <img src="visuals/enhancing_healthcare_with_docassist.png" alt="DocAssist System Architecture" width="800"/>
   <p><em>DocAssist AI System Architecture: Integrating Healthcare Support, Data Analysis, and Personalized Recommendations</em></p>
 </div>
+
 ## ✨ Features
 
 ### Core Functionality
