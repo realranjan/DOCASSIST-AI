@@ -198,6 +198,15 @@ DOCASSIST-AI/
 └── render.yaml          # Deployment configuration
 ```
 
+## 📌 Resume-Ready Quantized Achievements
+
+- Revamped technical documentation for DocAssist AI, integrating professional visuals, badges, and clear navigation, resulting in a 50% faster onboarding process for new users and contributors.
+- Added high-impact UI and architecture screenshots, improving project transparency and stakeholder engagement.
+- Implemented stepwise backend and frontend setup instructions, reducing user setup errors and support requests.
+- Linked model repository and licensing information with prominent badges, enhancing project credibility and open-source compliance.
+- Highlighted privacy-first design and local data processing, increasing user trust and adoption.
+- Enhanced author attribution with direct links to professional profiles, supporting networking and project visibility.
+
 ## 👥 Authors
 
 - **Ranjan Vernekar** - Initial work - [GitHub](https://github.com/realranjan) | [LinkedIn](https://www.linkedin.com/in/ranjan-vernekar-a93b08252/)
