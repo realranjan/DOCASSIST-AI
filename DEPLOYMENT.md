@@ -16,7 +16,7 @@
      - `PYTHON_VERSION`: `3.8.0`
 
 4. **Deploy the service**
-5. **Note the URL**: `https://your-app-name.onrender.com`
+5. **Note the URL**: `https://docassist-ai-h5bu.onrender.com`
 
 ### 2. Update Frontend API URLs
 
@@ -24,12 +24,12 @@ Update the API URLs in your frontend files to point to your Render backend:
 
 **In `frontend/public/index.html`:**
 ```javascript
-const response = await fetch('https://your-app-name.onrender.com/predict', {
+const response = await fetch('https://docassist-ai-h5bu.onrender.com/predict', {
 ```
 
 **In `frontend/public/app.html`:**
 ```javascript
-const response = await fetch('https://your-app-name.onrender.com/predict', {
+const response = await fetch('https://docassist-ai-h5bu.onrender.com/predict', {
 ```
 
 ## Frontend Deployment (Vercel)
@@ -44,7 +44,7 @@ const response = await fetch('https://your-app-name.onrender.com/predict', {
    - **Output Directory**: `frontend/public`
 
 3. **Environment Variables**:
-   - `API_URL`: `https://your-app-name.onrender.com`
+   - `API_URL`: `https://docassist-ai-h5bu.onrender.com`
 
 4. **Deploy**
 
@@ -72,7 +72,7 @@ The `vercel.json` file is already configured to serve static files from `fronten
 
 ### Testing Deployment:
 
-1. **Test Backend**: Visit `https://your-app-name.onrender.com/health`
+1. **Test Backend**: Visit `https://docassist-ai-h5bu.onrender.com/health`
 2. **Test Frontend**: Visit your Vercel URL
 3. **Test API**: Try submitting a prediction through the frontend
 
@@ -99,4 +99,4 @@ DOCASSIST-AI/
 - `PYTHON_VERSION`: `3.8.0`
 
 ### Vercel (Frontend):
-- `API_URL`: `https://your-app-name.onrender.com` 
+- `API_URL`: `https://docassist-ai-h5bu.onrender.com` 

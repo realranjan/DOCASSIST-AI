@@ -35,14 +35,14 @@ services:
         value: no-cache
     routes:
       - source: /api/*
-        destination: https://docassist-api.onrender.com/api/:splat
+        destination: https://docassist-ai-h5bu.onrender.com/api/:splat
       - source: /*
         destination: /index.html
     envVars:
       - key: NODE_VERSION
         value: 16.x
       - key: API_URL
-        value: https://docassist-api.onrender.com
+        value: https://docassist-ai-h5bu.onrender.com
 
 databases:
   # SQLite Database (if needed)

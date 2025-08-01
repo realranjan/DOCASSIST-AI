@@ -2345,7 +2345,7 @@
             const data = Object.fromEntries(formData);
             
             try {
-                const response = await fetch('https://docassist-api.onrender.com/predict', {
+                const response = await fetch('https://docassist-ai-h5bu.onrender.com/predict', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -2381,7 +2381,7 @@
             formData.append('file', fileInput.files[0]);
             
             try {
-                const response = await fetch('https://docassist-api.onrender.com/predict/file', {
+                const response = await fetch('https://docassist-ai-h5bu.onrender.com/predict/file', {
                     method: 'POST',
                     body: formData
                 });
