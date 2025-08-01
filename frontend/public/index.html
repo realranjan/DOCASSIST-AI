@@ -8,6 +8,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Configuration for DocAssist AI Frontend
+        const API_URL = (function() {
+            // Check if we're running locally
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                return 'http://localhost:5000';
+            }
+            // Default to production URL
+            return 'https://docassist-ai-h5bu.onrender.com';
+        })();
+        
+        const REQUEST_TIMEOUT = 30000; // 30 seconds
+        
+        console.log('🔧 Using API URL:', API_URL);
+        console.log('🔧 Request timeout:', REQUEST_TIMEOUT);
+    </script>
     <style>
         :root {
             /* Light theme */
@@ -1988,36 +2004,52 @@
         // Add blood ranges for parameter validation
         const BLOOD_RANGES = {
             'HAEMATOCRIT': {
-                'low': {'value': 37, 'unit': '%'},
-                'high': {'value': 47, 'unit': '%'}
+                'low': {'value': 10, 'unit': '%'},
+                'high': {'value': 70, 'unit': '%'},
+                'normal_low': 36,
+                'normal_high': 46
             },
             'HAEMOGLOBINS': {
-                'low': {'value': 12, 'unit': 'g/dL'},
-                'high': {'value': 16, 'unit': 'g/dL'}
+                'low': {'value': 3.0, 'unit': 'g/dL'},
+                'high': {'value': 25.0, 'unit': 'g/dL'},
+                'normal_low': 12.0,
+                'normal_high': 16.0
             },
             'ERYTHROCYTE': {
-                'low': {'value': 4.2, 'unit': 'M/µL'},
-                'high': {'value': 5.4, 'unit': 'M/µL'}
+                'low': {'value': 1.0, 'unit': 'M/µL'},
+                'high': {'value': 8.0, 'unit': 'M/µL'},
+                'normal_low': 4.2,
+                'normal_high': 5.4
             },
             'LEUCOCYTE': {
-                'low': {'value': 4.5, 'unit': 'K/µL'},
-                'high': {'value': 11.0, 'unit': 'K/µL'}
+                'low': {'value': 0.1, 'unit': 'K/µL'},
+                'high': {'value': 100.0, 'unit': 'K/µL'},
+                'normal_low': 4.5,
+                'normal_high': 11.0
             },
             'THROMBOCYTE': {
-                'low': {'value': 150, 'unit': 'K/µL'},
-                'high': {'value': 450, 'unit': 'K/µL'}
+                'low': {'value': 1, 'unit': 'K/µL'},
+                'high': {'value': 2000, 'unit': 'K/µL'},
+                'normal_low': 150,
+                'normal_high': 450
             },
             'MCH': {
-                'low': {'value': 27, 'unit': 'pg'},
-                'high': {'value': 33, 'unit': 'pg'}
+                'low': {'value': 15, 'unit': 'pg'},
+                'high': {'value': 50, 'unit': 'pg'},
+                'normal_low': 27,
+                'normal_high': 33
             },
             'MCHC': {
-                'low': {'value': 32, 'unit': 'g/dL'},
-                'high': {'value': 36, 'unit': 'g/dL'}
+                'low': {'value': 20, 'unit': 'g/dL'},
+                'high': {'value': 40, 'unit': 'g/dL'},
+                'normal_low': 32,
+                'normal_high': 36
             },
             'MCV': {
-                'low': {'value': 80, 'unit': 'fL'},
-                'high': {'value': 96, 'unit': 'fL'}
+                'low': {'value': 50, 'unit': 'fL'},
+                'high': {'value': 130, 'unit': 'fL'},
+                'normal_low': 80,
+                'normal_high': 96
             }
         };
 
@@ -2550,6 +2582,84 @@
             // Prevent default link behavior
             return false;
         }
+
+        // Add validation function for blood parameters
+        function validateBloodParameter(value, parameter) {
+            const range = BLOOD_RANGES[parameter];
+            if (!range) return { valid: true, message: '' };
+            
+            const numValue = parseFloat(value);
+            if (isNaN(numValue)) {
+                return { valid: false, message: `Please enter a valid number for ${parameter}` };
+            }
+            
+            if (numValue < range.low.value) {
+                return { 
+                    valid: false, 
+                    message: `${parameter} value (${numValue} ${range.low.unit}) is below the medically valid range (${range.low.value} ${range.low.unit}). This may indicate severe ${parameter.toLowerCase()} deficiency.` 
+                };
+            }
+            
+            if (numValue > range.high.value) {
+                return { 
+                    valid: false, 
+                    message: `${parameter} value (${numValue} ${range.high.unit}) is above the medically valid range (${range.high.value} ${range.high.unit}). This may indicate severe ${parameter.toLowerCase()} elevation.` 
+                };
+            }
+            
+            // Check if within normal range
+            if (numValue >= range.normal_low && numValue <= range.normal_high) {
+                return { valid: true, message: 'Normal range', status: 'normal' };
+            } else if (numValue < range.normal_low) {
+                return { valid: true, message: 'Below normal range', status: 'low' };
+            } else {
+                return { valid: true, message: 'Above normal range', status: 'high' };
+            }
+        }
+        
+        // Add real-time validation to form inputs
+        function addInputValidation() {
+            const inputs = document.querySelectorAll('input[type="number"]');
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    const parameter = this.name;
+                    const value = this.value;
+                    
+                    if (value && BLOOD_RANGES[parameter]) {
+                        const validation = validateBloodParameter(value, parameter);
+                        
+                        // Remove existing validation message
+                        const existingMessage = this.parentNode.querySelector('.validation-message');
+                        if (existingMessage) {
+                            existingMessage.remove();
+                        }
+                        
+                        // Add validation message
+                        if (!validation.valid || validation.status !== 'normal') {
+                            const messageDiv = document.createElement('div');
+                            messageDiv.className = 'validation-message';
+                            messageDiv.style.cssText = `
+                                font-size: 12px;
+                                margin-top: 4px;
+                                padding: 4px 8px;
+                                border-radius: 4px;
+                                ${!validation.valid ? 'background-color: #fef2f2; color: #dc2626; border: 1px solid #fecaca;' : 
+                                  validation.status === 'low' ? 'background-color: #fef3c7; color: #d97706; border: 1px solid #fed7aa;' :
+                                  'background-color: #fef3c7; color: #d97706; border: 1px solid #fed7aa;'}
+                            `;
+                            messageDiv.textContent = validation.message;
+                            this.parentNode.appendChild(messageDiv);
+                        }
+                    }
+                });
+            });
+        }
+
+        // Run connectivity test when page loads
+        window.addEventListener('load', testApiConnectivity);
+        
+        // Initialize input validation
+        window.addEventListener('load', addInputValidation);
     </script>
 </body>
 </html> 

@@ -8,6 +8,25 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<<<<<<< Updated upstream
+=======
+    <script>
+        // Configuration for DocAssist AI Frontend
+        const API_URL = (function() {
+            // Check if we're running locally
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                return 'http://localhost:5000';
+            }
+            // Default to production URL
+            return 'https://docassist-ai-h5bu.onrender.com';
+        })();
+        
+        const REQUEST_TIMEOUT = 30000; // 30 seconds
+        
+        console.log('🔧 Using API URL:', API_URL);
+        console.log('🔧 Request timeout:', REQUEST_TIMEOUT);
+    </script>
+>>>>>>> Stashed changes
     <style>
         :root {
             /* Light theme */

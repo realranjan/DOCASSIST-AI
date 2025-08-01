@@ -299,15 +299,15 @@ def predict():
         
         # Create validated input data for prediction
         input_data = {
-            'HAEMATOCRIT': min(max(original_data['HAEMATOCRIT'], 20), 60),  # Normal range: 36-46%
-            'HAEMOGLOBINS': min(max(original_data['HAEMOGLOBINS'], 8), 20),  # Normal range: 12-16 g/dL
-            'ERYTHROCYTE': min(max(original_data['ERYTHROCYTE'], 3), 7),    # Normal range: 4.0-5.5 × 10¹²/L
-            'LEUCOCYTE': min(max(original_data['LEUCOCYTE'], 2), 20),       # Normal range: 4.0-11.0 × 10⁹/L
-            'THROMBOCYTE': min(max(original_data['THROMBOCYTE'], 100), 600), # Normal range: 150-450 × 10⁹/L
-            'MCH': min(max(original_data['MCH'], 20), 40),                   # Normal range: 27-33 pg
-            'MCHC': min(max(original_data['MCHC'], 30), 40),                 # Normal range: 32-36 g/dL
-            'MCV': min(max(original_data['MCV'], 70), 110),                  # Normal range: 80-100 fL
-            'AGE': min(max(original_data['AGE'], 18), 100),                  # Reasonable age range
+            'HAEMATOCRIT': min(max(original_data['HAEMATOCRIT'], 10), 70),      # Medically valid range: 10-70%
+            'HAEMOGLOBINS': min(max(original_data['HAEMOGLOBINS'], 3.0), 25.0),  # Medically valid range: 3.0-25.0 g/dL
+            'ERYTHROCYTE': min(max(original_data['ERYTHROCYTE'], 1.0), 8.0),     # Medically valid range: 1.0-8.0 M/µL
+            'LEUCOCYTE': min(max(original_data['LEUCOCYTE'], 0.1), 100.0),       # Medically valid range: 0.1-100.0 K/µL
+            'THROMBOCYTE': min(max(original_data['THROMBOCYTE'], 1), 2000),      # Medically valid range: 1-2000 K/µL
+            'MCH': min(max(original_data['MCH'], 15), 50),                       # Medically valid range: 15-50 pg
+            'MCHC': min(max(original_data['MCHC'], 20), 40),                     # Medically valid range: 20-40 g/dL
+            'MCV': min(max(original_data['MCV'], 50), 130),                      # Medically valid range: 50-130 fL
+            'AGE': min(max(original_data['AGE'], 18), 100),                      # Reasonable age range
             'SEX_ENCODED': original_data['SEX_ENCODED']
         }
         

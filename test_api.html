@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Connectivity Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 DocAssist AI - API Connectivity Test</h1>
+    
+    <div id="results"></div>
+    
+    <div>
+        <button onclick="testHealth()">Test Health Endpoint</button>
+        <button onclick="testPrediction()">Test Prediction Endpoint</button>
+        <button onclick="testPDF()">Test PDF Generation</button>
+        <button onclick="runAllTests()">Run All Tests</button>
+    </div>
+    
+    <script>
+        const API_URL = 'https://docassist-ai-h5bu.onrender.com';
+        const resultsDiv = document.getElementById('results');
+        
+        function addResult(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = `<strong>${new Date().toLocaleTimeString()}</strong>: ${message}`;
+            resultsDiv.appendChild(div);
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+        }
+        
+        async function testHealth() {
+            addResult('Testing health endpoint...', 'info');
+            try {
+                const response = await fetch(`${API_URL}/health`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addResult(`✅ Health check passed! Model loaded: ${data.model_loaded}`, 'success');
+                    console.log('Health data:', data);
+                } else {
+                    addResult(`❌ Health check failed: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ Health check error: ${error.message}`, 'error');
+                console.error('Health check error:', error);
+            }
+        }
+        
+        async function testPrediction() {
+            addResult('Testing prediction endpoint...', 'info');
+            try {
+                const testData = {
+                    AGE: 35,
+                    SEX: 1,
+                    HAEMATOCRIT: 42,      // Normal range: 36-46%
+                    HAEMOGLOBINS: 14,     // Normal range: 12-16 g/dL
+                    ERYTHROCYTE: 4.8,     // Normal range: 4.2-5.4 M/µL
+                    LEUCOCYTE: 7.5,       // Normal range: 4.5-11.0 K/µL
+                    THROMBOCYTE: 280,     // Normal range: 150-450 K/µL
+                    MCH: 29,              // Normal range: 27-33 pg
+                    MCHC: 34,             // Normal range: 32-36 g/dL
+                    MCV: 88               // Normal range: 80-96 fL
+                };
+                
+                const response = await fetch(`${API_URL}/predict`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addResult(`✅ Prediction successful! Result: ${data.prediction}`, 'success');
+                    console.log('Prediction data:', data);
+                } else {
+                    addResult(`❌ Prediction failed: ${data.message || response.status}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ Prediction error: ${error.message}`, 'error');
+                console.error('Prediction error:', error);
+            }
+        }
+        
+        async function testPDF() {
+            addResult('Testing PDF generation...', 'info');
+            try {
+                const response = await fetch(`${API_URL}/test-pdf`);
+                
+                if (response.ok) {
+                    const blob = await response.blob();
+                    addResult(`✅ PDF generation successful! Size: ${blob.size} bytes`, 'success');
+                    
+                    // Create download link
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'test_report.pdf';
+                    a.textContent = 'Download Test PDF';
+                    a.style.display = 'inline-block';
+                    a.style.marginTop = '10px';
+                    a.style.padding = '5px 10px';
+                    a.style.backgroundColor = '#28a745';
+                    a.style.color = 'white';
+                    a.style.textDecoration = 'none';
+                    a.style.borderRadius = '3px';
+                    
+                    const resultDiv = resultsDiv.lastElementChild;
+                    resultDiv.appendChild(document.createElement('br'));
+                    resultDiv.appendChild(a);
+                } else {
+                    const errorData = await response.json();
+                    addResult(`❌ PDF generation failed: ${errorData.message || response.status}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ PDF generation error: ${error.message}`, 'error');
+                console.error('PDF generation error:', error);
+            }
+        }
+        
+        async function runAllTests() {
+            addResult('🚀 Running all tests...', 'info');
+            await testHealth();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await testPrediction();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await testPDF();
+            addResult('✅ All tests completed!', 'success');
+        }
+        
+        // Auto-run health test on page load
+        window.addEventListener('load', () => {
+            addResult('🔧 API Connectivity Test Tool Loaded', 'info');
+            addResult(`🌐 Testing API at: ${API_URL}`, 'info');
+            testHealth();
+        });
+    </script>
+</body>
+</html> 
