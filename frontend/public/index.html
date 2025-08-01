@@ -2001,6 +2001,50 @@
     </div>
 
     <script>
+<<<<<<< Updated upstream
+=======
+        // Get API URL from config
+        const API_URL = (function() {
+            // Check if we're running locally
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                return 'http://localhost:5000';
+            }
+            // Default to production URL
+            return 'https://docassist-ai-h5bu.onrender.com';
+        })();
+        
+        const REQUEST_TIMEOUT = 30000; // 30 seconds
+        
+        console.log('🔧 Using API URL:', API_URL);
+        console.log('🔧 Request timeout:', REQUEST_TIMEOUT);
+        
+        // Test API connectivity on page load
+        async function testApiConnectivity() {
+            try {
+                console.log('🔍 Testing API connectivity...');
+                const response = await fetch(`${API_URL}/health`, {
+                    method: 'GET',
+                    timeout: 5000
+                });
+                
+                if (response.ok) {
+                    const healthData = await response.json();
+                    console.log('✅ API is healthy:', healthData);
+                    return true;
+                } else {
+                    console.warn('⚠️ API health check failed:', response.status);
+                    return false;
+                }
+            } catch (error) {
+                console.error('❌ API connectivity test failed:', error);
+                return false;
+            }
+        }
+        
+        // Run connectivity test when page loads
+        window.addEventListener('load', testApiConnectivity);
+        
+>>>>>>> Stashed changes
         // Add blood ranges for parameter validation
         const BLOOD_RANGES = {
             'HAEMATOCRIT': {
