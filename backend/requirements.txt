@@ -4,7 +4,7 @@ numpy
 pandas
 PyPDF2
 scikit-learn
-lightgbm
+lightgbm==4.1.0
 scipy
 joblib
 werkzeug
@@ -12,6 +12,7 @@ python-dateutil
 gunicorn
 pdfplumber
 pdfkit
+pickle-mixin
 --only-binary=numpy,scipy,pandas,scikit-learn 
 
 

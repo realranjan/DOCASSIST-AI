@@ -321,6 +321,169 @@
         /* Medical Report Styling */
         .medical-report {
             color: var(--foreground);
+            font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+        }
+
+        .medical-report-content {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .medical-report-content h3 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--foreground);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .medical-report-content h4 {
+            font-family: 'Geist', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--foreground);
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .patient-info {
+            background: var(--muted);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .patient-info p {
+            margin: 0.5rem 0;
+            font-size: 1rem;
+            color: var(--foreground);
+        }
+
+        .lab-results {
+            margin: 1.5rem 0;
+        }
+
+        .lab-results ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .lab-results li {
+            background: var(--background-light);
+            padding: 1rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lab-results strong {
+            font-weight: 600;
+            color: var(--foreground);
+        }
+
+        .analysis-summary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin: 1.5rem 0;
+        }
+
+        .analysis-summary h4 {
+            color: white;
+            margin-top: 0;
+        }
+
+        .analysis-summary p {
+            margin: 0.5rem 0;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .confidence-note {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-top: 1rem;
+            border-left: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .confidence-note p {
+            margin: 0;
+            font-size: 0.9rem;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        /* Recommendations Styling */
+        .recommendations-content {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin: 1rem 0;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .recommendations-content h4 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--foreground);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .recommendations-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .recommendations-content li {
+            background: var(--background-light);
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 0.75rem;
+            border-left: 4px solid var(--primary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .recommendations-content strong {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Status indicators */
+        .status-normal {
+            color: var(--primary) !important;
+            font-weight: 600;
+        }
+
+        .status-abnormal {
+            color: #f59e0b !important;
+            font-weight: 600;
+        }
+
+        .status-invalid {
+            color: #ef4444 !important;
+            font-weight: 600;
         }
 
         .report-header {
@@ -1488,51 +1651,6 @@
             background: rgba(255, 255, 255, 0.02);
             border-color: rgba(255, 255, 255, 0.1);
         }
-
-        .button-secondary {
-            background-color: #f3f4f6;
-            color: #374151;
-            border: 1px solid #d1d5db;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 16px;
-        }
-        .button-secondary:hover {
-            background-color: #e5e7eb;
-        }
-        .toast {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            padding: 12px 24px;
-            border-radius: 6px;
-            background: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            animation: slideIn 0.3s ease-out;
-        }
-        .toast-content {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .toast-success {
-            border-left: 4px solid #10b981;
-        }
-        .toast-error {
-            border-left: 4px solid #ef4444;
-        }
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
     </style>
 </head>
 <body>
@@ -1684,35 +1802,35 @@
                             <div class="grid">
                     <div class="form-group">
                                     <label for="HAEMATOCRIT">Haematocrit (%)</label>
-                                    <input type="number" step="0.01" class="input" id="HAEMATOCRIT" name="HAEMATOCRIT" required>
+                                    <input type="number" step="0.1" class="input" id="HAEMATOCRIT" name="HAEMATOCRIT" required>
                     </div>
                     <div class="form-group">
                                     <label for="HAEMOGLOBINS">Haemoglobin (g/dL)</label>
-                                    <input type="number" step="0.01" class="input" id="HAEMOGLOBINS" name="HAEMOGLOBINS" required>
+                                    <input type="number" step="0.1" class="input" id="HAEMOGLOBINS" name="HAEMOGLOBINS" required>
                     </div>
                     <div class="form-group">
                                     <label for="ERYTHROCYTE">Erythrocyte (M/µL)</label>
-                                    <input type="number" step="0.01" class="input" id="ERYTHROCYTE" name="ERYTHROCYTE" required>
+                                    <input type="number" step="0.1" class="input" id="ERYTHROCYTE" name="ERYTHROCYTE" required>
                     </div>
                     <div class="form-group">
                                     <label for="LEUCOCYTE">Leucocyte (K/µL)</label>
-                                    <input type="number" step="0.01" class="input" id="LEUCOCYTE" name="LEUCOCYTE" required>
+                                    <input type="number" step="0.1" class="input" id="LEUCOCYTE" name="LEUCOCYTE" required>
                     </div>
                     <div class="form-group">
                                     <label for="THROMBOCYTE">Thrombocyte (K/µL)</label>
-                                    <input type="number" step="0.01" class="input" id="THROMBOCYTE" name="THROMBOCYTE" required>
+                                    <input type="number" step="1" class="input" id="THROMBOCYTE" name="THROMBOCYTE" required>
                     </div>
                     <div class="form-group">
                                     <label for="MCH">MCH (pg)</label>
-                                    <input type="number" step="0.01" class="input" id="MCH" name="MCH" required>
+                                    <input type="number" step="0.1" class="input" id="MCH" name="MCH" required>
                     </div>
                     <div class="form-group">
                                     <label for="MCHC">MCHC (g/dL)</label>
-                                    <input type="number" step="0.01" class="input" id="MCHC" name="MCHC" required>
+                                    <input type="number" step="0.1" class="input" id="MCHC" name="MCHC" required>
                     </div>
                     <div class="form-group">
                                     <label for="MCV">MCV (fL)</label>
-                                    <input type="number" step="0.01" class="input" id="MCV" name="MCV" required>
+                                    <input type="number" step="0.1" class="input" id="MCV" name="MCV" required>
                     </div>
                     <div class="form-group">
                                     <label for="AGE">Age (years)</label>
@@ -1781,11 +1899,11 @@
                                     <div class="range-fill" style="width: 0%"></div>
                                 </div>
                                 <div class="range-labels">
-                                    <span>4.5</span>
+                                    <span>4.0</span>
                                     <span>11.0</span>
                                 </div>
                             </div>
-                            <p class="parameter-info">Reference: 4.5 - 11.0 K/µL</p>
+                            <p class="parameter-info">Reference: 4.0 - 11.0 K/µL</p>
                         </div>
                         <div class="parameter-card" id="plateletCard">
                             <div class="parameter-header">
@@ -1826,10 +1944,10 @@
                                 </div>
                                 <div class="range-labels">
                                     <span>27</span>
-                                    <span>32</span>
+                                    <span>33</span>
                                 </div>
                             </div>
-                            <p class="parameter-info">Reference: 27 - 32 pg</p>
+                            <p class="parameter-info">Reference: 27 - 33 pg</p>
                         </div>
                     </div>
                 </div>
@@ -1891,7 +2009,7 @@
             },
             'MCH': {
                 'low': {'value': 27, 'unit': 'pg'},
-                'high': {'value': 32, 'unit': 'pg'}
+                'high': {'value': 33, 'unit': 'pg'}
             },
             'MCHC': {
                 'low': {'value': 32, 'unit': 'g/dL'},
@@ -2026,10 +2144,13 @@
         }
 
         function updateDashboard(analysis) {
+            console.log('🔄 updateDashboard called with:', analysis);
+            
             const noDataMessage = document.getElementById('noDataMessage');
             const analysisContent = document.getElementById('analysisContent');
 
             if (!analysis) {
+                console.log('❌ No analysis data provided');
                 noDataMessage.style.display = 'block';
                 analysisContent.style.display = 'none';
                 return;
@@ -2037,6 +2158,7 @@
 
             // Only show analysis content if we have valid data
             if (analysis.LEUCOCYTE && analysis.THROMBOCYTE && analysis.MCH) {
+                console.log('✅ Valid analysis data found, updating dashboard');
                 noDataMessage.style.display = 'none';
                 analysisContent.style.display = 'block';
 
@@ -2045,7 +2167,7 @@
                 updateParameterCard(wbcCard, {
                     value: analysis.LEUCOCYTE,
                     unit: 'K/µL',
-                    min: 4.5,
+                    min: 4.0,
                     max: 11.0,
                     current: analysis.LEUCOCYTE
                 });
@@ -2066,33 +2188,39 @@
                     value: analysis.MCH,
                     unit: 'pg',
                     min: 27,
-                    max: 32,
+                    max: 33,
                     current: analysis.MCH
                 });
 
                 // Update health score and summary
                 const healthScore = calculateHealthScore(analysis);
+                console.log('🏥 Calculated health score:', healthScore);
                 updateHealthScore(healthScore);
                 updateHealthSummary(analysis);
             } else {
+                console.log('❌ Missing required analysis data:', {
+                    LEUCOCYTE: analysis.LEUCOCYTE,
+                    THROMBOCYTE: analysis.THROMBOCYTE,
+                    MCH: analysis.MCH
+                });
                 noDataMessage.style.display = 'block';
                 analysisContent.style.display = 'none';
             }
         }
 
         function updateParameterCard(card, params) {
-            const value = parseFloat(params.value).toFixed(2);
-            const percentage = Math.min(Math.max(((parseFloat(params.value) - params.min) / (params.max - params.min)) * 100, 0), 100);
-            const status = getParameterStatus(parseFloat(params.value), params.min, params.max);
+            const value = parseFloat(params.value);
+            const percentage = ((value - params.min) / (params.max - params.min)) * 100;
+            const status = getParameterStatus(value, params.min, params.max);
 
             card.querySelector('.parameter-value').textContent = `${value} ${params.unit}`;
-            card.querySelector('.range-fill').style.width = `${percentage}%`;
             card.querySelector('.trend-text').textContent = status;
+            card.querySelector('.range-fill').style.width = `${Math.min(Math.max(percentage, 0), 100)}%`;
             card.querySelector('.range-labels').innerHTML = `
-                <span>${params.min.toFixed(2)}</span>
-                <span>${params.max.toFixed(2)}</span>
+                <span>${params.min}</span>
+                <span>${params.max}</span>
             `;
-            card.querySelector('.parameter-info').textContent = `Reference: ${params.min.toFixed(2)} - ${params.max.toFixed(2)} ${params.unit}`;
+            card.querySelector('.parameter-info').textContent = `Reference: ${params.min} - ${params.max} ${params.unit}`;
         }
 
         function getParameterStatus(value, min, max) {
@@ -2102,39 +2230,52 @@
         }
 
         function calculateHealthScore(analysis) {
+            console.log('🔍 calculateHealthScore called with:', analysis);
+            
             // Simple health score calculation based on parameters within range
             let score = 0;
             let total = 0;
 
-            // Check each parameter
+            // Check each parameter with realistic ranges
             const parameters = [
-                { value: analysis.LEUCOCYTE, min: 4.5, max: 11.0 },
-                { value: analysis.THROMBOCYTE, min: 150, max: 450 },
-                { value: analysis.MCH, min: 27, max: 32 },
-                { value: analysis.MCHC, min: 32, max: 36 },
-                { value: analysis.MCV, min: 80, max: 96 },
-                { value: analysis.HAEMATOCRIT, min: 37, max: 47 },
-                { value: analysis.HAEMOGLOBINS, min: 12, max: 16 },
-                { value: analysis.ERYTHROCYTE, min: 4.2, max: 5.4 }
+                { value: analysis.LEUCOCYTE, min: 4.0, max: 11.0, name: 'LEUCOCYTE' },
+                { value: analysis.THROMBOCYTE, min: 150, max: 450, name: 'THROMBOCYTE' },
+                { value: analysis.MCH, min: 27, max: 33, name: 'MCH' },
+                { value: analysis.MCHC, min: 32, max: 36, name: 'MCHC' },
+                { value: analysis.MCV, min: 80, max: 100, name: 'MCV' },
+                { value: analysis.HAEMATOCRIT, min: 36, max: 46, name: 'HAEMATOCRIT' },
+                { value: analysis.HAEMOGLOBINS, min: 12, max: 16, name: 'HAEMOGLOBINS' },
+                { value: analysis.ERYTHROCYTE, min: 4.0, max: 5.5, name: 'ERYTHROCYTE' }
             ];
 
             parameters.forEach(param => {
-                if (param.value >= param.min && param.value <= param.max) {
+                const isNormal = param.value >= param.min && param.value <= param.max;
+                console.log(`  ${param.name}: ${param.value} (${isNormal ? 'NORMAL' : 'ABNORMAL'}) - Range: ${param.min}-${param.max}`);
+                if (isNormal) {
                     score++;
                 }
                 total++;
             });
 
-            return Math.round((score / total) * 100);
+            const finalScore = Math.round((score / total) * 100);
+            console.log(`🎯 Final health score: ${finalScore}% (${score}/${total} parameters normal)`);
+            return finalScore;
         }
 
         function updateHealthScore(score) {
+            console.log('🎨 updateHealthScore called with score:', score);
+            
             const circle = document.querySelector('.circular-chart .circle');
             const percentage = document.querySelector('.circular-chart .percentage');
+            
+            console.log('🔍 Found elements:', { circle: !!circle, percentage: !!percentage });
             
             if (circle && percentage) {
                 circle.setAttribute('stroke-dasharray', `${score}, 100`);
                 percentage.textContent = `${score}%`;
+                console.log('✅ Health score updated successfully');
+            } else {
+                console.log('❌ Could not find health score elements');
             }
         }
 
@@ -2144,8 +2285,8 @@
 
             const findings = [];
             
-            // Add findings based on parameter values
-            if (analysis.LEUCOCYTE < 4.5) {
+            // Add findings based on parameter values with realistic ranges
+            if (analysis.LEUCOCYTE < 4.0) {
                 findings.push('White blood cell count is low, indicating possible immune system concerns');
             } else if (analysis.LEUCOCYTE > 11.0) {
                 findings.push('Elevated white blood cell count suggests possible infection or inflammation');
@@ -2159,7 +2300,7 @@
 
             if (analysis.MCH < 27) {
                 findings.push('Low MCH indicates possible iron deficiency');
-            } else if (analysis.MCH > 32) {
+            } else if (analysis.MCH > 33) {
                 findings.push('High MCH detected');
             }
 
@@ -2219,9 +2360,13 @@
                 
                 displayResults(result);
                 
-                // If overview tab is visible, update it
+                // If overview tab is visible, update it with the processed data from backend
                 if (document.getElementById('overview').style.display !== 'none') {
-                    updateDashboard(data);
+                    if (result.extracted_values) {
+                        updateDashboard(result.extracted_values);
+                    } else {
+                        updateDashboard(data);
+                    }
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -2312,14 +2457,6 @@
                                     : "Condition is manageable with outpatient care"}
                             </div>
                             <div class="generated-by">Report Generated by AI-Powered Medical Decision Support System</div>
-                            <button onclick="downloadReport()" class="button button-secondary">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                    <polyline points="7 10 12 15 17 10"></polyline>
-                                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                                </svg>
-                                Download Report as PDF
-                            </button>
                         </div>
                     </div>
                 `;
@@ -2340,71 +2477,22 @@
             }
         }
 
-        async function downloadReport() {
-            try {
-                const reportDiv = document.querySelector('.medical-report');
-                if (!reportDiv) {
-                    showToast('No report available to download', 'error');
-                    return;
-                }
-
-                const response = await fetch('http://localhost:5000/generate-pdf', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        html_content: reportDiv.innerHTML
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to generate PDF');
-                }
-
-                // Create a blob from the PDF Stream
-                const blob = await response.blob();
-                // Create a link to download it
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'medical_report.pdf';
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                a.remove();
-
-                showToast('Report downloaded successfully', 'success');
-            } catch (error) {
-                console.error('Error downloading report:', error);
-                showToast('Failed to download report', 'error');
-            }
-        }
-
-        function showToast(message, type = 'info') {
-            const toast = document.createElement('div');
-            toast.className = `toast toast-${type}`;
-            toast.innerHTML = `
-                <div class="toast-content">
-                    ${type === 'success' ? `
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                        </svg>
-                    ` : type === 'error' ? `
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        function displayError(message) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.style.display = 'block';
+            resultsDiv.innerHTML = `
+                <div class="alert alert-error">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"></circle>
                         <line x1="12" y1="8" x2="12" y2="12"></line>
                         <line x1="12" y1="16" x2="12.01" y2="16"></line>
                     </svg>
-                    ` : ''}
-                    <span>${message}</span>
+                    <div>
+                        <strong>Error</strong>
+                        ${message}
+                    </div>
                 </div>
             `;
-            document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
         }
 
         // Clear any existing analysis data when the page loads
