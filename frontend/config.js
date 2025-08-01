@@ -1,5 +1,5 @@
 const config = {
-  apiUrl: process.env.API_URL || 'http://localhost:5000',
+  apiUrl: process.env.API_URL || 'https://docassist-api.onrender.com',
 };
 
 module.exports = config; 
