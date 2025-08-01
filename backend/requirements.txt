@@ -11,6 +11,7 @@ werkzeug
 python-dateutil
 gunicorn
 pdfplumber
+pdfkit
 --only-binary=numpy,scipy,pandas,scikit-learn 
 
 
